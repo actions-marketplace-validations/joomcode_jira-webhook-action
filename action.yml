@@ -1,0 +1,25 @@
+name: "jira-webhook-action"
+description: "GitHub Actions starter for TypeScript with automated releases"
+author: "Max Nikitin <https://github.com/4u>"
+inputs:
+  github_token:
+    required: true
+    description: "GitHub Token"
+  webhooks:
+    required: true
+    description: "Webhook URLs (new line separated)"
+  data:
+    required: false
+    description: "Custom JSON data. Will be revieved as a `data` field in webhook."
+  base:
+    required: false
+    description: "Base SHA for manual commits list"
+  head:
+    required: false
+    description: "Head SHA for manual commits list"
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: "move"
+  color: "blue"
