@@ -4,11 +4,21 @@ import {GitHub} from '@actions/github/lib/utils';
 import {extractIssueNumbers} from './issue';
 import {UnwrapOcktokitResponse} from './types';
 
-const octokit: InstanceType<typeof GitHub> = getOctokit(getInput('github_token'), {
-  userAgent: 'jira-webhook-action',
-});
+type OctokitType = InstanceType<typeof GitHub>;
 
-export type CommitType = UnwrapOcktokitResponse<typeof octokit.rest.repos.listCommits>[number];
+let instance: OctokitType | undefined = undefined;
+function octokit(): OctokitType {
+  if (!instance) {
+    instance = getOctokit(getInput('github_token'), {
+      userAgent: 'jira-webhook-action',
+    });
+  }
+  return instance;
+}
+
+export type CommitType = UnwrapOcktokitResponse<
+  OctokitType['rest']['repos']['listCommits']
+>[number];
 
 export type PullRequestType = NonNullable<typeof context.payload.pull_request>;
 
@@ -35,7 +45,7 @@ export function getIssueIdsByCommits(
 }
 
 export async function getCommit(ref: string): Promise<CommitType> {
-  const githubCommit = await octokit.rest.repos.getCommit({
+  const githubCommit = await octokit().rest.repos.getCommit({
     ...context.repo,
     ref,
   });
@@ -55,18 +65,19 @@ export async function getPullRequestIssueIds(pr: PullRequestType): Promise<strin
 }
 
 export async function getPullRequestCommits(pr: PullRequestType): Promise<CommitType[]> {
-  return octokit.paginate(octokit.rest.pulls.listCommits, {
+  const commits = await octokit().paginate(octokit().rest.pulls.listCommits, {
     ...context.repo,
     pull_number: pr.number,
   });
+  return commits || [];
 }
 
 export async function getCommitsBetween(base: string, head: string): Promise<CommitType[]> {
-  const response = await octokit.paginate(octokit.rest.repos.compareCommits, {
+  const response = await octokit().paginate(octokit().rest.repos.compareCommits, {
     ...context.repo,
     base,
     head,
   });
 
-  return response.commits;
+  return response.commits || [];
 }
