@@ -18,7 +18,8 @@ jobs:
         run: npm run build
       - uses: ./
         with:
-          command: State In Progress
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          token: ${{ secrets.token }}
-          base_url: ${{ secrets.base_url }}
+          data: '{"action": "review_requested"}'
+          webhooks: |
+            ${{ secrets.JIRA_WEBHOOK_1 }}
+            ${{ secrets.JIRA_WEBHOOK_2 }}

@@ -2,10 +2,10 @@
   "pull_request": {
     "number": 1,
     "head": {
-      "ref": "103d93ebc8e08313f62d5db054b0b2018b0aa43a"
+      "ref": "2399bdc7889c01197b8c70f40e083c413f858810"
     },
     "base": {
-      "ref": "15be4abec8daf583d79936c286a1890579188b60"
+      "ref": "e760252c0999bcfbe3c03384f6f623b7ed43ff5d"
     }
   },
   "head_commit": {

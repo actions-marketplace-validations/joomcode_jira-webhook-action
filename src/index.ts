@@ -36,6 +36,7 @@ export const run = async () => {
     return;
   }
 
+  console.log('Found Jira IDs:', issues);
   const payload = {
     method: 'POST',
     body: JSON.stringify({

@@ -18,7 +18,7 @@ inputs:
     required: false
     description: "Head SHA for manual commits list"
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
 branding:
   icon: "move"
